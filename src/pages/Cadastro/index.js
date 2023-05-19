@@ -25,12 +25,42 @@ function Cadastro() {
   const [TelefoneInput, setTelefoneInput] = useState('')
   const [UrgenciaInput, setUrgenciaInput] = useState('')
 
+  const [NomeCadastro, setNomeCadastroInput] = useState('')
+
+  const [user, setUser] = useState({})
+  
+
+  const [cadastro, setCadastro] = useState([]);
+
+  useEffect(() => {
+    async function loadCadastro(){
+      const userDetail = localStorage.getItem("@detailUser")
+      setUser(JSON.parse(userDetail))
+
+      if(userDetail){
+        
+        const cadastroRef = collection(db, "Cadastro")
+        const q = query(cadastroRef)
+        const unsub = onSnapshot(q, (snapshot) => {
+          let lista = [];
+
+          snapshot.forEach((doc) => {
+            lista.push({
+              nome: doc.data().nome, 
+              idade: doc.data().idade,           
+            })
+          })
+          setCadastro(lista);
+        })
+      }
+    }
+    loadCadastro();
+  }, [])
+
 
   //Registrando Cadastro
   async function handleRegister(e) {
     e.preventDefault();
-
-
 
     await addDoc(collection(db, "Cadastro"), {
 
@@ -71,6 +101,12 @@ function Cadastro() {
         alert("Erro " + error)
       })
   }
+  
+  //criar matrícula
+
+  function criarMatricula(item){
+    let nomeCadastro = item
+  }
 
   //fazendo o logout
   async function handleLogout() {
@@ -78,7 +114,6 @@ function Cadastro() {
   }
 
   return (
-
 
     <div>
       <div className='title'><img src={Logo} alt="logo" title="Logo da Reviva" />
@@ -163,6 +198,13 @@ function Cadastro() {
 
       </form>
 
+      {cadastro.map((item) => (
+          <article key={item.cadastro} className='list'>
+          <p>{item.nome}</p>
+          <button onClick={ () => criarMatricula(item.nome)} >Criar Matrícula</button>
+        </article>
+        ))}
+
         <button className='btn-Cad' to="/cadastro">Cadastro</button>
         <button className='btn-Mat' to="/matricula" >Matrícula</button>
         <button className='btn-Rel' to="/relatorio" >Relatório</button>
@@ -170,7 +212,7 @@ function Cadastro() {
       
 
     </div>
-  );
-}
+  );}
+
 
 export default Cadastro;
