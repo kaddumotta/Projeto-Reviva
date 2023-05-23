@@ -40,7 +40,7 @@ function Home() {
     <div className="home-container">
         <img src={Logo} alt="logo" title="Logo da Reviva" />
       <br/>
-      <span>Servimos por Amor! e Amamos Servir!</span>
+      <span>Servimos por Amor! E Amamos Servir!</span>
 
       <form className="form" onSubmit={handleLogin}>
         <input type="text" placeholder="Digite seu email..." 

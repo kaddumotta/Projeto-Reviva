@@ -9,7 +9,7 @@ import { addDoc, collection, onSnapshot, query, orderBy, where, doc, deleteDoc, 
 
 
 function Cadastro() {
-
+ 
   const [NomeInput, setNomeInput] = useState('')
   const [DataInput, setDataInput] = useState('')
   const [IdadeInput, setIdadeInput] = useState('')
@@ -47,7 +47,7 @@ function Cadastro() {
           snapshot.forEach((doc) => {
             lista.push({
               nome: doc.data().nome, 
-              idade: doc.data().idade,           
+              codigo: doc.data().codigo,           
             })
           })
           setCadastro(lista);
@@ -64,6 +64,7 @@ function Cadastro() {
 
     await addDoc(collection(db, "Cadastro"), {
 
+      
       nome: NomeInput,
       data_nascimento: DataInput,
       idade: IdadeInput,
@@ -117,12 +118,14 @@ function Cadastro() {
 
     <div>
       <div className='title'><img src={Logo} alt="logo" title="Logo da Reviva" />
+      <span>Servimos por Amor! E Amamos Servir!</span>
         <br />
         <h1>Cadastro de Assistidos</h1></div>
 
 
       <form className='box' onSubmit={handleRegister}>
-        <div className="input-group">
+
+             <div className="input-group">
           <label for="nome"> Nome Completo</label>
           <input type="text" id="nome" placeholder="Digite o seu nome completo" value={NomeInput} onChange={(e) => setNomeInput(e.target.value)} required />
         </div>
@@ -199,12 +202,16 @@ function Cadastro() {
       </form>
 
       {cadastro.map((item) => (
-          <article key={item.cadastro} className='list'>
-          <p>{item.nome}</p>
-          <button onClick={ () => criarMatricula(item.nome)} >Criar Matrícula</button>
+          <article key={item.nome} className='list'>
+          <p>{item.codigo} {item.nome}</p>
+          <div>
+          <button className='btn-edit' >Editar Cadastro</button>
+          <button className='btn-cmat' onClick={ () => criarMatricula(item.nome)} >Criar Matrícula</button>
+          </div>
+          
         </article>
         ))}
-
+        
         <button className='btn-Cad' to="/cadastro">Cadastro</button>
         <button className='btn-Mat' to="/matricula" >Matrícula</button>
         <button className='btn-Rel' to="/relatorio" >Relatório</button>
