@@ -31,6 +31,7 @@ function Cadastro() {
   
 
   const [cadastro, setCadastro] = useState([]);
+  
 
   useEffect(() => {
     async function loadCadastro(){
@@ -38,6 +39,8 @@ function Cadastro() {
       setUser(JSON.parse(userDetail))
 
       if(userDetail){
+
+        const data = JSON.parse(userDetail);
         
         const cadastroRef = collection(db, "Cadastro")
         const q = query(cadastroRef)
@@ -62,7 +65,7 @@ function Cadastro() {
   async function handleRegister(e) {
     e.preventDefault();
 
-    await addDoc(collection(db, "Cadastro"), {
+        await addDoc(collection(db, "Cadastro"), {
 
       
       nome: NomeInput,
@@ -102,13 +105,14 @@ function Cadastro() {
         toast.warn("Erro " + error)
       })
   }
-  
-  //criar matrícula
-
-  function criarMatricula(item){
-    let nomeCadastro = item
+   
+  function editCadastro(item, bairro){
+    setNomeInput(item.nome);
+    setBairroInput(bairro);
+    
+   
   }
-
+  
   //fazendo o logout
   async function handleLogout() {
     await signOut(auth)
@@ -201,12 +205,12 @@ function Cadastro() {
 
       </form>
 
-      {cadastro.map((item) => (
-          <article key={item.nome} className='list'>
-          <p>{item.codigo} {item.nome}</p>
+      {cadastro.map((item, bairro) => (
+          <article key={item} className='list'>
+          <p>{item.nome}</p>
           <div>
-          <button className='btn-edit' >Editar Cadastro</button>
-          <button className='btn-cmat' onClick={ () => criarMatricula(item.nome)} >Criar Matrícula</button>
+          <button className='btn-edit' onClick={() => editCadastro(item, bairro)}>Editar Cadastro</button>
+          <button className='btn-cmat' >Criar Matrícula</button>
           </div>
           
         </article>
