@@ -1,7 +1,7 @@
 import { useState } from "react";
 import './home.css';
 import Logo from '../../Imagens/logo.png';
-
+import {toast} from 'react-toastify'
 
 import { Link } from 'react-router-dom'
 
@@ -27,12 +27,16 @@ function Home() {
         //navegar para /admin
         navigate('/cadastro', {replace: true})
       })
+      .then(() => {
+        toast.success('Login feito com Sucesso!')
+      })
+
       .catch((erro) => {
-        alert('Erro' + erro)
+        toast.warn('Erro' + erro)
       });
 
     }else{
-      alert('Preencha')
+      toast.warn('Preencha os dados')
     }
   } 
   

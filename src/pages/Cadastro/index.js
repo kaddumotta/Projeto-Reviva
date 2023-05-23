@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { auth, db } from '../../firebaseConnection'
 import { signOut } from 'firebase/auth'
 import Logo from '../../Imagens/logo.png';
-
+import {toast} from 'react-toastify'
 import { addDoc, collection, onSnapshot, query, orderBy, where, doc, deleteDoc, updateDoc } from 'firebase/firestore'
 
 
@@ -82,7 +82,7 @@ function Cadastro() {
 
     })
       .then(() => {
-        alert("Cadastro Realizado com Sucesso")
+        toast.success("Cadastro Realizado com Sucesso")
         setNomeInput('')
         setDataInput('')
         setIdadeInput('')
@@ -99,7 +99,7 @@ function Cadastro() {
         setUrgenciaInput('')
       })
       .catch((error) => {
-        alert("Erro " + error)
+        toast.warn("Erro " + error)
       })
   }
   

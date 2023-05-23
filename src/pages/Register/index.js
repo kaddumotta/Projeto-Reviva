@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Logo from '../../Imagens/logo.png';
-  
+import {toast} from 'react-toastify'
   import { Link } from 'react-router-dom'
   import { auth } from '../../firebaseConnection'
   import { createUserWithEmailAndPassword} from 'firebase/auth'
@@ -20,12 +20,13 @@ import Logo from '../../Imagens/logo.png';
         await createUserWithEmailAndPassword(auth, email, password)
         .then(() =>{
           navigate('/cadastro', {replace: true})
+          toast.success("Cadastro Realizado com Sucesso!")
         })
         .catch(() =>{
-          alert('Erro')
+          toast.warn('Erro')
         })
       }else{
-        alert('Preencha')
+        toast.warn('Preencha os campos!')
       }
     } 
     
