@@ -24,6 +24,7 @@ function Cadastro() {
   const [ResponsavelInput, setResponsavelInput] = useState('')
   const [TelefoneInput, setTelefoneInput] = useState('')
   const [UrgenciaInput, setUrgenciaInput] = useState('')
+  const [edit, setEdit] = useState({})
 
   const [NomeCadastro, setNomeCadastroInput] = useState('')
 
@@ -43,14 +44,28 @@ function Cadastro() {
         const data = JSON.parse(userDetail);
         
         const cadastroRef = collection(db, "Cadastro")
-        const q = query(cadastroRef)
+        const q = query(cadastroRef, orderBy("created", "desc"))
         const unsub = onSnapshot(q, (snapshot) => {
           let lista = [];
 
           snapshot.forEach((doc) => {
             lista.push({
+              id: doc.id,
               nome: doc.data().nome, 
-              codigo: doc.data().codigo,           
+              data_nascimento: doc.data().data_nascimento,
+              idade: doc.data().idade,
+              rg: doc.data().rg,
+              endereco: doc.data().endereco,
+              cidade: doc.data().cidade,
+              bairro: doc.data().bairro,
+              estado: doc.data().estado,
+              escola: doc.data().escola,
+              serie: doc.data().serie,
+              periodo: doc.data().periodo,
+              responsavel: doc.data().responsavel,
+              telefone: doc.data().telefone,
+              urgencia: doc.data().urgencia,           
+                        
             })
           })
           setCadastro(lista);
@@ -65,9 +80,11 @@ function Cadastro() {
   async function handleRegister(e) {
     e.preventDefault();
 
+    
         await addDoc(collection(db, "Cadastro"), {
-
       
+      
+      created: new Date(),
       nome: NomeInput,
       data_nascimento: DataInput,
       idade: IdadeInput,
@@ -106,11 +123,78 @@ function Cadastro() {
       })
   }
    
-  function editCadastro(item, bairro){
-    setNomeInput(item.nome);
-    setBairroInput(bairro);
-    
-   
+  function editCadastro(id){
+        setNomeInput(id.nome)  
+        setDataInput(id.data_nascimento)
+        setIdadeInput(id.idade)
+        setRgInput(id.rg)
+        setEnderecoInput(id.endereco)
+        setCidadeInput(id.cidade)
+        setBairroInput(id.bairro)
+        setEstadoInput(id.estado)
+        setEscolaInput(id.escola)
+        setSerieInput(id.serie)
+        setPeriodoInput(id.periodo)
+        setResponsavelInput(id.responsavel)
+        setTelefoneInput(id.telefone)
+        setUrgenciaInput(id.urgencia)
+        setEdit(id);
+  }
+
+  async function handleUpdateCadastro() {
+    const CadastroRef = doc(db, "Cadastro", edit?.id)
+    await updateDoc(CadastroRef, {
+      nome: NomeInput,
+      data_nascimento: DataInput,
+      idade: IdadeInput,
+      rg: RgInput,
+      endereço: EnderecoInput,
+      cidade: CidadeInput,
+      bairro: BairroInput,
+      estado: EstadoInput,
+      escola: EscolaInput,
+      serie: SerieInput,
+      periodo: PeriodoInput,
+      responsavel: ResponsavelInput,
+      telefone: TelefoneInput,
+      urgencia: UrgenciaInput,
+    })
+      .then(() => {
+        alert("Cadastro Atualizado!")
+        setNomeInput('')
+        setDataInput('')
+        setIdadeInput('')
+        setRgInput('')
+        setEnderecoInput('')
+        setCidadeInput('')
+        setBairroInput('')
+        setEstadoInput('')
+        setEscolaInput('')
+        setSerieInput('')
+        setPeriodoInput('')
+        setResponsavelInput('')
+        setTelefoneInput('')
+        setUrgenciaInput('')
+        setEdit('')
+      })
+      .catch(() => {
+        alert("Erro ao atualizar Cadastro!")
+        setNomeInput('')
+        setDataInput('')
+        setIdadeInput('')
+        setRgInput('')
+        setEnderecoInput('')
+        setCidadeInput('')
+        setBairroInput('')
+        setEstadoInput('')
+        setEscolaInput('')
+        setSerieInput('')
+        setPeriodoInput('')
+        setResponsavelInput('')
+        setTelefoneInput('')
+        setUrgenciaInput('')
+        setEdit('')
+      })
   }
   
   //fazendo o logout
@@ -200,16 +284,19 @@ function Cadastro() {
         </div>
 
         <div class="input-group">
-          <button type='submit'>Cadastrar</button>
+        {Object.keys(edit).length > 0 ? (
+          <button className='btn-register' type='submit'>Atualizar Cadastro</button>) : (
+          <button className='btn-register' type='submit'>Cadastrar</button>
+        )}
         </div>
 
       </form>
 
-      {cadastro.map((item, bairro) => (
-          <article key={item} className='list'>
-          <p>{item.nome}</p>
+      {cadastro.map((id) => (
+          <article key={id} className='list'>
+          <p>{id.nome}</p>
           <div>
-          <button className='btn-edit' onClick={() => editCadastro(item, bairro)}>Editar Cadastro</button>
+          <button className='btn-edit' onClick={() => editCadastro(id)} >Editar Cadastro</button>
           <button className='btn-cmat' >Criar Matrícula</button>
           </div>
           
