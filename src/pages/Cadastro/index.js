@@ -26,9 +26,7 @@ function Cadastro() {
   const [UrgenciaInput, setUrgenciaInput] = useState('')
   const [edit, setEdit] = useState({})
 
-  const [NomeCadastro, setNomeCadastroInput] = useState('')
-
-  const [user, setUser] = useState({})
+    const [user, setUser] = useState({})
   
 
   const [cadastro, setCadastro] = useState([]);
@@ -76,14 +74,20 @@ function Cadastro() {
   }, [])
 
 
-  //Registrando Cadastro
+  //Registrando Cadastro e Alterando Cadastro
+
   async function handleRegister(e) {
     e.preventDefault();
 
+    //Condição se for edição ir para UpdateCadastro
+    if (edit?.id) {
+      handleUpdateCadastro();
+      return;
+    }
     
+    //Fazendo o registro
         await addDoc(collection(db, "Cadastro"), {
-      
-      
+            
       created: new Date(),
       nome: NomeInput,
       data_nascimento: DataInput,
@@ -123,6 +127,7 @@ function Cadastro() {
       })
   }
    
+  //Dados que serão alterados
   function editCadastro(id){
         setNomeInput(id.nome)  
         setDataInput(id.data_nascimento)
@@ -141,6 +146,8 @@ function Cadastro() {
         setEdit(id);
   }
 
+  //Função para realizar a atualização
+  
   async function handleUpdateCadastro() {
     const CadastroRef = doc(db, "Cadastro", edit?.id)
     await updateDoc(CadastroRef, {
