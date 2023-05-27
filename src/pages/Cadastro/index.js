@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react'
 import { auth, db } from '../../firebaseConnection'
 import { signOut } from 'firebase/auth'
 import Logo from '../../Imagens/logo.png';
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 import { addDoc, collection, onSnapshot, query, orderBy, where, doc, deleteDoc, updateDoc } from 'firebase/firestore'
 
 
 function Cadastro() {
- 
+
   const [NomeInput, setNomeInput] = useState('')
   const [DataInput, setDataInput] = useState('')
   const [IdadeInput, setIdadeInput] = useState('')
@@ -26,21 +26,21 @@ function Cadastro() {
   const [UrgenciaInput, setUrgenciaInput] = useState('')
   const [edit, setEdit] = useState({})
 
-    const [user, setUser] = useState({})
-  
+  const [user, setUser] = useState({})
+
 
   const [cadastro, setCadastro] = useState([]);
-  
+
 
   useEffect(() => {
-    async function loadCadastro(){
+    async function loadCadastro() {
       const userDetail = localStorage.getItem("@detailUser")
       setUser(JSON.parse(userDetail))
 
-      if(userDetail){
+      if (userDetail) {
 
         const data = JSON.parse(userDetail);
-        
+
         const cadastroRef = collection(db, "Cadastro")
         const q = query(cadastroRef, orderBy("created", "desc"))
         const unsub = onSnapshot(q, (snapshot) => {
@@ -49,7 +49,7 @@ function Cadastro() {
           snapshot.forEach((doc) => {
             lista.push({
               id: doc.id,
-              nome: doc.data().nome, 
+              nome: doc.data().nome,
               data_nascimento: doc.data().data_nascimento,
               idade: doc.data().idade,
               rg: doc.data().rg,
@@ -62,8 +62,8 @@ function Cadastro() {
               periodo: doc.data().periodo,
               responsavel: doc.data().responsavel,
               telefone: doc.data().telefone,
-              urgencia: doc.data().urgencia,           
-                        
+              urgencia: doc.data().urgencia,
+
             })
           })
           setCadastro(lista);
@@ -84,10 +84,10 @@ function Cadastro() {
       handleUpdateCadastro();
       return;
     }
-    
+
     //Fazendo o registro
-        await addDoc(collection(db, "Cadastro"), {
-            
+    await addDoc(collection(db, "Cadastro"), {
+
       created: new Date(),
       nome: NomeInput,
       data_nascimento: DataInput,
@@ -126,28 +126,28 @@ function Cadastro() {
         toast.warn("Erro " + error)
       })
   }
-   
+
   //Dados que serão alterados
-  function editCadastro(id){
-        setNomeInput(id.nome)  
-        setDataInput(id.data_nascimento)
-        setIdadeInput(id.idade)
-        setRgInput(id.rg)
-        setEnderecoInput(id.endereco)
-        setCidadeInput(id.cidade)
-        setBairroInput(id.bairro)
-        setEstadoInput(id.estado)
-        setEscolaInput(id.escola)
-        setSerieInput(id.serie)
-        setPeriodoInput(id.periodo)
-        setResponsavelInput(id.responsavel)
-        setTelefoneInput(id.telefone)
-        setUrgenciaInput(id.urgencia)
-        setEdit(id);
+  function editCadastro(id) {
+    setNomeInput(id.nome)
+    setDataInput(id.data_nascimento)
+    setIdadeInput(id.idade)
+    setRgInput(id.rg)
+    setEnderecoInput(id.endereco)
+    setCidadeInput(id.cidade)
+    setBairroInput(id.bairro)
+    setEstadoInput(id.estado)
+    setEscolaInput(id.escola)
+    setSerieInput(id.serie)
+    setPeriodoInput(id.periodo)
+    setResponsavelInput(id.responsavel)
+    setTelefoneInput(id.telefone)
+    setUrgenciaInput(id.urgencia)
+    setEdit(id);
   }
 
   //Função para realizar a atualização
-  
+
   async function handleUpdateCadastro() {
     const CadastroRef = doc(db, "Cadastro", edit?.id)
     await updateDoc(CadastroRef, {
@@ -203,7 +203,7 @@ function Cadastro() {
         setEdit('')
       })
   }
-  
+
   //fazendo o logout
   async function handleLogout() {
     await signOut(auth)
@@ -213,14 +213,14 @@ function Cadastro() {
 
     <div>
       <div className='title'><img src={Logo} alt="logo" title="Logo da Reviva" />
-      <span>Servimos por Amor! E Amamos Servir!</span>
+        <span>Servimos por Amor! E Amamos Servir!</span>
         <br />
         <h1>Cadastro de Assistidos</h1></div>
 
 
       <form className='box' onSubmit={handleRegister}>
 
-             <div className="input-group">
+        <div className="input-group">
           <label for="nome"> Nome Completo</label>
           <input type="text" id="nome" placeholder="Digite o seu nome completo" value={NomeInput} onChange={(e) => setNomeInput(e.target.value)} required />
         </div>
@@ -291,33 +291,33 @@ function Cadastro() {
         </div>
 
         <div class="input-group">
-        {Object.keys(edit).length > 0 ? (
-          <button className='btn-register' type='submit'>Atualizar Cadastro</button>) : (
-          <button className='btn-register' type='submit'>Cadastrar</button>
-        )}
+          {Object.keys(edit).length > 0 ? (
+            <button className='btn-register' type='submit'>Atualizar Cadastro</button>) : (
+            <button className='btn-register' type='submit'>Cadastrar</button>
+          )}
         </div>
 
       </form>
 
       {cadastro.map((id) => (
-          <article key={id} className='list'>
+        <article key={id} className='list'>
           <p>{id.nome}</p>
           <div>
-          <button className='btn-edit' onClick={() => editCadastro(id)} >Editar Cadastro</button>
-          <button className='btn-cmat' >Criar Matrícula</button>
+            <button className='btn-edit' onClick={() => editCadastro(id)} >Editar Cadastro</button>
+            <button className='btn-cmat' >Criar Matrícula</button>
           </div>
-          
+
         </article>
-        ))}
-        
-        <button className='btn-Cad' to="/cadastro">Cadastro</button>
-        <button className='btn-Mat' to="/matricula" >Matrícula</button>
-        <button className='btn-Rel' to="/relatorio" >Relatório</button>
-        <button className='btn-logout' onClick={handleLogout}>Sair</button>
-      
+      ))}
+
+      <button className='btn-Cad' to="/cadastro">Cadastro</button>
+      <button className='btn-Mat' to="/matricula" >Matrícula</button>
+      <button className='btn-Rel' to="/relatorio" >Relatório</button>
+      <button className='btn-logout' onClick={handleLogout}>Sair</button>
 
     </div>
-  );}
+  );
+}
 
 
 export default Cadastro;
