@@ -8,17 +8,23 @@ import Register from '../pages/Register';
 
 
 import Private from './Private'
+import Projetos from '../pages/Projetos';
 
 function RoutesApp(){
     
         return(
            <Routes>
             <Route path='/' element={ <Home /> }/>
-            <Route path='/cadastro' element={ <Private><Cadastro /></Private> }/>
-            <Route path='/register' element={ <Register /> }/>
-            <Route path='/matricula' element={ <Matricula /> }/>
-            <Route path='/relatorio' element={ <Relatorio /> }/>
            
+            <Route path='/cadastro' element={ <Private><Cadastro /></Private> }/>
+           
+            <Route path='/register' element={ <Private><Register /></Private> }/>
+           
+            <Route path='/matricula' element={ <Private><Matricula /></Private> }/>
+           
+            <Route path='/relatorio' element={ <Private><Relatorio /></Private> }/>
+           
+            <Route path='/projeto' element={ <Private><Projetos /></Private> }/>
            </Routes>
         )
     

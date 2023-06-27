@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { signOut } from 'firebase/auth'
 import Logo from '../../Imagens/logo.png';
 import {toast} from 'react-toastify'
   import { Link } from 'react-router-dom'
   import { auth } from '../../firebaseConnection'
   import { createUserWithEmailAndPassword} from 'firebase/auth'
   import { useNavigate } from "react-router-dom";
+  import Header from '../../Components/Header';
+  import '../Cadastro/cadastro.css';
   
   function Register() {
     const [nome, setNome] = useState('')
@@ -12,6 +15,11 @@ import {toast} from 'react-toastify'
     const [password, setPassword] = useState('')
     const navigate = useNavigate();
   
+
+    async function handleLogout() {
+      await signOut(auth)
+    }
+
   //Verificação se o email e a senha está preenchidos
     async function handleRegister(e){
       e.preventDefault();
@@ -32,7 +40,7 @@ import {toast} from 'react-toastify'
     
       return (
       <div className="home-container">
-
+<Header/>
       <img src={Logo} alt="logo" title="Logo da Reviva" />
       <span>Servimos por Amor! E Amamos Servir!</span>
       <br/>
@@ -41,12 +49,12 @@ import {toast} from 'react-toastify'
   
         <form className="form" onSubmit={handleRegister}>
 
-        <input type="text" placeholder="Digite seu nome" 
+        <input type="text" placeholder="Digite o nome da conta" 
           value={nome}
           onChange={(e) => setNome(e.target.value)}
           />
 
-          <input type="text" placeholder="Digite seu email..." 
+          <input type="text" placeholder="Digite o e-mail do usuário!" 
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           />

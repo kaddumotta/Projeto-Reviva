@@ -7,6 +7,8 @@ import Logo from '../../Imagens/logo.png';
 import { toast } from 'react-toastify'
 import { addDoc, collection, onSnapshot, query, orderBy, where, doc, deleteDoc, updateDoc } from 'firebase/firestore'
 
+import Header from '../../Components/Header';
+
 
 function Cadastro() {
 
@@ -212,6 +214,7 @@ function Cadastro() {
   return (
 
     <div>
+      <Header/>
       <div className='title'><img src={Logo} alt="logo" title="Logo da Reviva" />
         <span>Servimos por Amor! E Amamos Servir!</span>
         <br />
@@ -310,10 +313,7 @@ function Cadastro() {
         </article>
       ))}
 
-      <button className='btn-Cad' to="/cadastro">Cadastro</button>
-      <button className='btn-Mat' to="/matricula" >Matrícula</button>
-      <button className='btn-Rel' to="/relatorio" >Relatório</button>
-      <button className='btn-logout' onClick={handleLogout}>Sair</button>
+      
 
     </div>
   );
