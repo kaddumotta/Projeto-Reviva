@@ -1,4 +1,4 @@
-
+import '../Cadastro/cadastro.css';
 import { useState, useEffect } from 'react'
 import { auth, db } from '../../firebaseConnection'
 import { signOut } from 'firebase/auth'
@@ -6,7 +6,7 @@ import Logo from '../../Imagens/logo.png';
 import { toast } from 'react-toastify'
 import { addDoc, collection, onSnapshot, query, orderBy, where, doc, deleteDoc, updateDoc } from 'firebase/firestore'
 import Header from '../../Components/Header';
-import '../Cadastro/cadastro.css';
+
 
 function Projetos() {
 
@@ -112,7 +112,7 @@ function Projetos() {
   return (
 
     <div>
-     
+      <Header/>
       <div className='title'><img src={Logo} alt="logo" title="Logo da Reviva" />
         <span>Servimos por Amor! E Amamos Servir!</span>
         <br />

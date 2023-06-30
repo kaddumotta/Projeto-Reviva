@@ -46,6 +46,7 @@
     width: 50%;
     float: left;
     padding-right: 15px;
+    margin-bottom: 15px;
     color: #e7e2e2;
 }
 
@@ -62,15 +63,9 @@
 
 form .input-group {
     margin-bottom: 15px;
-}
-
-form .input-group,
-.input-group-w33,
-.input-group-w50 label {
-    color: #e7e2e2;
-    font-weight: bold;
-    display: block;
-    margin-bottom: 2px;
+    width: 100%;
+    float: left;
+    padding-right: 15px;
 }
 
 select {
