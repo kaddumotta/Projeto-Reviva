@@ -171,17 +171,11 @@ function Matricula() {
       
   }
 
-  //Dados que serão alterados
-  function editMatricula(id) {
+  //Inativando Matrícula
+  async function editMatricula(id) {
     setStatus(id.Status);
     setEdit(id);
 
-    handleUpdateMatricula();
-  }
-
-  //Função para realizar a atualização
-
-  async function handleUpdateMatricula() {
     const MatriculaRef = doc(db, "Matricula", edit?.id)
     await updateDoc(MatriculaRef, {
       Status: 'Inativa',
